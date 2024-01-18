@@ -253,11 +253,7 @@ sub doit
 
 	$info = CGI::Info->new($options);
 
-	if($info->is_search_engine()) {
-		print "Status: 200 ",
-			HTTP::Status::status_message(200),
-			"\n\n";
-	} elsif($info->is_robot()) {
+	if($info->is_robot()) {
 		# Payment required :-)
 		print "Status: 402 ",
 			HTTP::Status::status_message(402),
