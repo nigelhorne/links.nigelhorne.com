@@ -1,0 +1,227 @@
+# Only allow access to known bots (eventually)
+
+Sitemap: https://links.nigelhorne.com/sitemap.xml.gz
+
+User-agent: www.bandsman.co.uk/brassbandportalspider
+Disallow: /_vti_bin/
+
+User-agent: www.concert-bands.co.uk/concertbandportalspider
+Disallow: /_vti_bin/
+
+User-agent: Amazonbot
+Disallow: /classifieds/
+Disallow: /deputies/
+Disallow: /stats/
+Disallow: /cgi-bin/rblcheck.pl
+Disallow: /sounds/
+Disallow: /_borders/
+Disallow: /_derived/
+Disallow: /_fpclass/
+Disallow: /_overlay/
+Disallow: /_private/
+Disallow: /_themes/
+Disallow: /_vti_bin/
+Disallow: /_vti_cnf/
+Disallow: /_vti_log/
+Disallow: /_vti_map/
+Disallow: /_vti_pvt/
+Disallow: /_vti_txt/
+Disallow: /bin/
+
+User-agent: Googlebot
+Disallow: /classifieds/
+Disallow: /deputies/
+Disallow: /stats/
+Disallow: /cgi-bin/rblcheck.pl
+Disallow: /sounds/
+Disallow: /_borders/
+Disallow: /_derived/
+Disallow: /_fpclass/
+Disallow: /_overlay/
+Disallow: /_private/
+Disallow: /_themes/
+Disallow: /_vti_bin/
+Disallow: /_vti_cnf/
+Disallow: /_vti_log/
+Disallow: /_vti_map/
+Disallow: /_vti_pvt/
+Disallow: /_vti_txt/
+Disallow: /bin/
+Disallow: /cgi-bin/events
+Disallow: /cgi-bin/formmail.cgi
+Disallow: /cgi-bin/virus/crontab.pl
+Disallow: /cgi-bin/conf/cart.pl.l4pconf
+Disallow: /cgi-bin/WebShop/sendmail.pl
+Disallow: /cgi-bin/FormMail.pl
+Disallow: /cgi-bin/page500.pl
+Disallow: /cgi-bin/sp.pl
+Disallow: /cgi-bin/WebShop/locksubs.pl
+Disallow: /cgi-bin/WebShop/template.pl
+Disallow: /cgi-bin/WebShop/ipconvrt.pl
+Disallow: /cgi-bin/WebShop/chkemail.pl
+Disallow: /cgi-bin/WebShop/parsform.pl
+Disallow: /cgi-bin/WebShop/ccvalid.pl
+Disallow: /cgi-bin/dnsbl.pl
+Disallow: /cgi-bin/iana.pl
+Disallow: /cgi-bin/anydata.pl
+Disallow: /cgi-bin/allow.pl
+Disallow: /forum/adm/index.php
+Disallow: /cgi-bin/sweet.fcgi
+Disallow: /cgi-bin/config.pl
+Disallow: /cgi-bin/dbd.pl
+Disallow: /cgi-bin/xml.pl
+
+User-agent: Mediatoolkitbot
+Disallow: /
+
+User-agent: NPBot-1/2.0
+Disallow: /
+
+User-agent: turnitinbot
+Disallow: /
+
+User-agent: EmailSiphon
+Disallow: /
+
+User-agent: Slurp
+Disallow: /
+
+User-agent: szukacz
+Disallow: /
+
+User-agent: 008
+Disallow: /
+
+User-agent: bingbot
+Disallow: /classifieds/
+Disallow: /deputies/
+Disallow: /stats/
+Disallow: /sounds/
+Disallow: /_borders/
+Disallow: /_derived/
+Disallow: /_fpclass/
+Disallow: /_overlay/
+Disallow: /_private/
+Disallow: /_themes/
+Disallow: /_vti_bin/
+Disallow: /_vti_cnf/
+Disallow: /_vti_log/
+Disallow: /_vti_map/
+Disallow: /_vti_pvt/
+Disallow: /_vti_txt/
+Disallow: /cgi-bin/virus/crontab.pl
+Disallow: /cgi-bin/dnsbl.pl
+Disallow: /cgi-bin/WebShop/parsform.pl
+Disallow: /cgi-bin/WebShop/template.pl
+Disallow: /cgi-bin/WebShop/locksubs.pl
+Disallow: /cgi-bin/WebShop/ccvalid.pl
+Disallow: /cgi-bin/WebShop/chkemail.pl
+Disallow: /cgi-bin/WebShop/sendmail.pl
+Disallow: /cgi-bin/events
+Disallow: /cgi-bin/FormMail.pl
+Disallow: /cgi-bin/iana.pl
+Disallow: /cgi-bin/page500.pl
+Disallow: /cgi-bin/hello.pl
+Disallow: /cgi-bin/WebShop/ipconvrt.pl
+Disallow: /cgi-bin/anydata.pl
+Disallow: /forum/adm/index.php
+Disallow: /cgi-bin/sweet.fcgi
+Disallow: /cgi-bin/config.pl
+Disallow: /cgi-bin/check_vacancy.pl
+Disallow: /cgi-bin/allow.pl
+Disallow: /cgi-bin/cenv.pl
+Disallow: /cgi-bin/env.fcgi
+Disallow: /cgi-bin/dbd.pl
+
+User-Agent: FreeFind
+Disallow: /classifieds/
+Disallow: /deputies/
+Disallow: /stats/
+Disallow: /sounds/
+Disallow: /_borders/
+Disallow: /_derived/
+Disallow: /_fpclass/
+Disallow: /_overlay/
+Disallow: /_private/
+Disallow: /_themes/
+Disallow: /_vti_bin/
+Disallow: /_vti_cnf/
+Disallow: /_vti_log/
+Disallow: /_vti_map/
+Disallow: /_vti_pvt/
+Disallow: /_vti_txt/
+Disallow: /forum/adm/index.php
+
+User-agent: spbot
+Disallow: /
+
+User-agent: dotbot
+Disallow: /
+
+User-agent: Sosospider
+Disallow: /
+
+User-agent: *
+Disallow: /cgi-bin/formmail.cgi
+Disallow: /cgi-bin/FormMail.pl
+Disallow: /cgi-bin/virus/crontab.pl
+Disallow: /cgi-bin/WebShop
+Disallow: /cgi-bin/page403.pl
+Disallow: /cgi-bin/page404.pl
+Disallow: /cgi-bin/page500.pl
+Disallow: /cgi-bin/events
+Disallow: /cgi-bin/sweet.fcgi
+Disallow: /cgi-bin/rblcheck.pl
+Disallow: /cgi-bin/anydata.pl
+Disallow: /forum/adm/index.php
+Disallow: /cgi-bin/config.pl
+Disallow: /templates
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SEMrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MauiBot
+Disallow: /
+
+User-agent: BUbiNG
+Disallow: /
+
+User-agent: XoviBot
+Disallow: /
+
+User-agent: Mozilla/4.0 (compatible; Vagabondo/4.0; webcrawler at wise-guys dot nl; http://webagent.wise-guys.nl/; http://www.wise-guys.nl/)
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: PetalBot
+Disallow: /
+
+User-agent: AspiegelBot
+Disallow: /
+
+User-agent: 8LEGS
+Disallow: /
+
+User-Agent: The Knowledge AI
+Disallow: /
+
+User-agent: Barkrowler
+Disallow: /
+  
+User-agent: Barkrowler/0.7
+Disallow: /
+
+User-agent: *
+Disallow: /bin
+# Disallow: /
