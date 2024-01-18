@@ -5,6 +5,7 @@
 #	njh@bandsman.co.uk
 
 # Forward to a URL in the database - add to the database using ../bin/generate
+#	e.g.	http://links.nigelhorne.com/cgi-bin/links.fcgi?entry=foo
 
 # Based on VWF - https://github.com/nigelhorne/vwf
 
@@ -261,19 +262,19 @@ sub doit
 		print "Status: 402 ",
 			HTTP::Status::status_message(402),
 			"\n\n";
-	} elsif(my $url = $info->url()) {
-		if(my $location = $links->location($url)) {
+	} elsif(my $entry = $info->entry()) {
+		if(my $location = $links->location($entry)) {
 			print "Status: 301 ",
 				HTTP::Status::status_message(301),
 				"\n",
 				"Location: $location\n\n";
-			$logger->info("Changing $url to $location");
+			$logger->info("Changing $entry to $location");
 		} else {
 			print "Status: 400 ", HTTP::Status::status_message(400), "\n",
 				"Content-Type: text/html; charset=ISO-8859-1\n",
 				"\n",
-				"Could not find $url in the database\n";
-			$logger->warn("Couldn't find $url");
+				"Could not find $entry in the database\n";
+			$logger->warn("Couldn't find $entry");
 		}
 	}
 }
