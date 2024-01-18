@@ -1,0 +1,51 @@
+# Debugging and errors
+# log4perl.logger.links=TRACE, A1, A2, A3
+# log4perl.logger.links=TRACE, A1, A2
+# Warnings and errors only
+log4perl.logger.links=WARN, A1, A2, A3
+
+log4perl.appender.A1=Log::Dispatch::File
+# log4perl.appender.A1.Filter=RangeAll
+log4perl.appender.A1.Filter=RangeError
+log4perl.appender.A1.filename=/tmp/links.log
+log4perl.appender.A1.mode=append
+log4perl.appender.A1.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.A1.layout.ConversionPattern=%d %p> %R: %F{1}:%L %M - %m%n%T%n
+# log4perl.appender.A1.layout.ConversionPattern=links[%P]: [%p] %m%n
+
+# log4perl.appender.A2=Log::Dispatch::Email::MailSendmail
+# log4perl.appender.A2=Log::Dispatch::Null
+log4perl.appender.A2=Log::Dispatch::Email::Sendmail
+# log4perl.appender.A2=Log::Dispatch::File
+# log4perl.appender.A2.filename=/tmp/links.err
+# log4perl.appender.A2.mode=append
+log4perl.appender.A2.Filter=RangeError
+log4perl.appender.A2.from=webmaster@bandsman.co.uk
+log4perl.appender.A2.to=alerts@nigelhorne.com
+log4perl.appender.A2.subject=Error in links
+log4perl.appender.A2.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.A2.layout.ConversionPattern=%d %p> %F{1}:%L %M - %m%n%T%n
+
+log4perl.appender.A3=Log::Dispatch::Syslog
+# log4perl.appender.A3.Filter=RangeAll
+log4perl.appender.A3.Filter=RangeError
+log4perl.appender.A3.socket.host=logs.teada.net
+log4perl.appender.A3.socket.port=42185
+log4perl.appender.A3.socket.type=udp
+log4perl.appender.A3.ident=bandsman
+# log4perl.appender.A3.layout=Log::Log4perl::Layout::PatternLayout
+# log4perl.appender.A3.layout.ConversionPattern=links[%P]: [%p] %m
+log4perl.appender.A3.layout=Log::Log4perl::Layout::Syslog
+# log4perl.appender.A3.layout=Log::Log4perl::Layout::NoopLayout
+
+log4perl.filter.RangeAll=Log::Log4perl::Filter::LevelRange
+log4perl.filter.RangeAll.LevelMin=TRACE
+# log4perl.filter.RangeAll.LevelMin=WARN
+log4perl.filter.RangeAll.LevelMax=FATAL
+log4perl.filter.RangeAll.AcceptOnMatch=true
+
+log4perl.filter.RangeError=Log::Log4perl::Filter::LevelRange
+# log4perl.filter.RangeError.LevelMin=INFO
+log4perl.filter.RangeError.LevelMin=WARN
+log4perl.filter.RangeError.LevelMax=FATAL
+log4perl.filter.RangeError.AcceptOnMatch=true

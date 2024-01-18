@@ -5,6 +5,7 @@
 #	njh@bandsman.co.uk
 
 # Given a URL, generate and print a unique key into links.csv
+#	Find an entry in the database using the web interface at ../cgi-bin/links.cgi
 
 BEGIN {
 	if(-d '/home/hornenj/perlmods') {
