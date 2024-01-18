@@ -1,5 +1,11 @@
 #!/usr/bin/env perl
 
+# Copyright (C) 2024 Nigel Horne
+#	https://github.com/nigelhorne/links.nigelhorne.com
+#	njh@bandsman.co.uk
+
+# Given a URL, generate and print a unique key into links.csv
+
 BEGIN {
 	if(-d '/home/hornenj/perlmods') {
 		# Running at Dreamhost
@@ -16,8 +22,12 @@ BEGIN {
 
 use strict;
 use warnings;
+
+use File::Spec;
 use FindBin qw($Bin);
+use IPC::System::Simple;
 use String::Random;
+use autodie qw(:all);
 
 use lib "$Bin/../lib";
 use lib "$Bin/../../src/njh/vwf/lib";
@@ -25,14 +35,22 @@ use lib "$Bin/../../src/njh/vwf/lib";
 use VWF::DB::links;
 my $links = VWF::DB::links->new("$Bin/../etc");
 
-my $location = $links->location(entry => 'tulip');
-die $location;
+if(my $location = $links->location($ARGV[0])) {
+	print "$location\n";	# Already in the database
+	exit 0;
+}
 
+# Keep generating until we have a unique key
 while(1) {
 	my $string = String::Random->new()->randpattern('s' x 8);
 
-	print "$string\n";
-	last;
+	if(!$links->location($string)) {
+		print "$string\n";
+		if(open(my $fout, '>>', File::Spec->catfile("$Bin/../etc", 'links.csv'))) {
+			print $fout "$ARGV[0],$string\n";
+		}
+		last;
+	}
 }
 
 1;
