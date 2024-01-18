@@ -12,12 +12,27 @@ BEGIN {
 	}
 }
 
-no lib '.';
+# no lib '.';
 
 use strict;
 use warnings;
+use FindBin qw($Bin);
 use String::Random;
 
-my $string = String::Random->new()->randpattern('s' x 8);
+use lib "$Bin/../lib";
+use lib "$Bin/../../src/njh/vwf/lib";
 
-print "$string\n";
+use VWF::DB::links;
+my $links = VWF::DB::links->new("$Bin/../etc");
+
+my $location = $links->location(entry => 'tulip');
+die $location;
+
+while(1) {
+	my $string = String::Random->new()->randpattern('s' x 8);
+
+	print "$string\n";
+	last;
+}
+
+1;
