@@ -266,7 +266,7 @@ sub doit
 				"Location: $location\n\n";
 			$logger->info("Changing $entry to $location");
 		} else {
-			print "Status: 400 ", HTTP::Status::status_message(400), "\n",
+			print "Status: 404 ", HTTP::Status::status_message(404), "\n",
 				"Content-Type: text/html; charset=ISO-8859-1\n",
 				"\n",
 				"Could not find $entry in the database\n";
