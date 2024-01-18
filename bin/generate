@@ -37,7 +37,7 @@ use VWF::DB::links;
 my $links = VWF::DB::links->new("$Bin/../etc");
 
 if(my $location = $links->location($ARGV[0])) {
-	print "$location\n";	# Already in the database
+	print "http://links.nigelhorne.com/l/$location\n";	# Already in the database
 	exit 0;
 }
 
@@ -46,9 +46,9 @@ while(1) {
 	my $string = String::Random->new()->randpattern('s' x 8);
 
 	if(!$links->location($string)) {
-		print "$string\n";
+		print "http://links.nigelhorne.com/l/$string\n";
 		if(open(my $fout, '>>', File::Spec->catfile("$Bin/../etc", 'links.csv'))) {
-			print $fout "$ARGV[0],$string\n";
+			print $fout "$string,$ARGV[0]\n";
 		}
 		last;
 	}
