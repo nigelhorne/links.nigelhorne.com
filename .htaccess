@@ -4,6 +4,11 @@
 RewriteEngine on
 RewriteBase /
 
+# # Change l.nigelhorne.com into links.nigelhorne.com.uk (sending 301 so they
+# # use that in the future)
+# RewriteCond	%{HTTP_HOST}	^l.nigelhorne\.com.$	[NC]
+# RewriteRule	^(.*)$	https://%{HTTP_HOST}/$1	[R=301,L]
+
 RewriteCond %{REQUEST_URI} ^/(stats|failed_auth\.html).*$ [NC]
 RewriteRule . - [L]
 
