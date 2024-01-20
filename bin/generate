@@ -36,8 +36,8 @@ use lib "$Bin/../../src/njh/vwf/lib";
 use VWF::DB::links;
 my $links = VWF::DB::links->new("$Bin/../etc");
 
-if(my $location = $links->location($ARGV[0])) {
-	print "http://links.nigelhorne.com/l/$location\n";	# Already in the database
+if(my $entry = $links->entry(location => $ARGV[0])) {
+	print "http://links.nigelhorne.com/l/$entry\n";	# Already in the database
 	exit 0;
 }
 
