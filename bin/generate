@@ -43,12 +43,12 @@ if(my $entry = $links->entry(location => $ARGV[0])) {
 
 # Keep generating until we have a unique key
 while(1) {
-	my $string = String::Random->new()->randpattern('s' x 8);
+	my $entry = String::Random->new()->randpattern('s' x 8);
 
-	if(!$links->location($string)) {
-		print "http://links.nigelhorne.com/l/$string\n";
+	if(!$links->location($entry)) {
+		print "http://links.nigelhorne.com/l/$entry\n";
 		if(open(my $fout, '>>', File::Spec->catfile("$Bin/../etc", 'links.csv'))) {
-			print $fout "$string,$ARGV[0]\n";
+			print $fout "$entry,$ARGV[0]\n";
 		}
 		last;
 	}
