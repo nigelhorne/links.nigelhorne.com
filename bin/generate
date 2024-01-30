@@ -31,10 +31,9 @@ use String::Random;
 use autodie qw(:all);
 
 use lib "$Bin/../lib";
-use lib "$Bin/../../src/njh/vwf/lib";
+use Database::links;
 
-use VWF::DB::links;
-my $links = VWF::DB::links->new("$Bin/../etc");
+my $links = Database::links->new("$Bin/../etc");
 
 if(my $entry = $links->entry(location => $ARGV[0])) {
 	print "http://links.nigelhorne.com/l/$entry\n";	# Already in the database

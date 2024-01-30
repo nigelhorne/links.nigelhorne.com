@@ -10,9 +10,7 @@
 # Based on VWF - https://github.com/nigelhorne/vwf
 
 # Can be tested at the command line, e.g.:
-#	LANG=en_GB root_dir=$(pwd)/.. ./page.fcgi page=index
-# To mimic a French mobile site:
-#	root_dir=$(pwd)/.. ./links.fcgi
+#	root_dir=$(pwd)/.. ./page.fcgi entry=foo
 
 use strict;
 use warnings;
@@ -36,7 +34,7 @@ use Log::Log4perl qw(:levels);	# Put first to cleanup last
 use CGI::ACL;	# TODO: finish
 use FCGI;
 use File::Basename;
-use CGI::Alert 'alerts@nigelhorne.com';
+use CGI::Alert $ENV{'SERVER_ADMIN'} || 'alerts@nigelhorne.com';
 use CGI::Info;
 use Error qw(:try);
 use Log::Any::Adapter;
@@ -46,13 +44,12 @@ use Log::WarnDie 0.09;
 # use Taint::Runtime qw($TAINT taint_env);
 use autodie qw(:all);
 
-use File::HomeDir;
-use lib File::HomeDir->my_home() . '/lib/perl5';
+# use File::HomeDir;
+# use lib File::HomeDir->my_home() . '/lib/perl5';
 
 use lib CGI::Info::script_dir() . '/../lib';
-use lib CGI::Info::script_dir() . '/../../src/njh/vwf/lib';
 
-use VWF::DB::links;
+use Database::links;
 
 # $TAINT = 1;
 # taint_env();
@@ -76,7 +73,7 @@ Log::Log4perl::init("$script_dir/../conf/$script_name.l4pconf");
 my $logger = Log::Log4perl->get_logger($script_name);
 Log::WarnDie->dispatcher($logger);
 
-my $links = VWF::DB::links->new($script_dir . '/../etc');
+my $links = Database::links->new($script_dir . '/../etc');
 
 if($@) {
 	$logger->error($@);

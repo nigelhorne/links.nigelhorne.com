@@ -1,10 +1,10 @@
-package VWF::DB::links;
+package Database::links;
 
 # The database associated with the links file
 
-use VWF::DB;
+use Database::Abstraction;
 
-our @ISA = ('VWF::DB');
+our @ISA = ('Database::Abstraction');
 
 sub _open {
 	my $self = shift;
