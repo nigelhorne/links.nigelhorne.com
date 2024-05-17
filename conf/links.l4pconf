@@ -1,12 +1,13 @@
 # Debugging and errors
 # log4perl.logger.links=TRACE, A1, A2, A3
 # log4perl.logger.links=TRACE, A1, A2
+log4perl.logger.links=INFO, A1, A2, A3
 # Warnings and errors only
-log4perl.logger.links=WARN, A1, A2, A3
+# log4perl.logger.links=WARN, A1, A2, A3
 
 log4perl.appender.A1=Log::Dispatch::File
 # log4perl.appender.A1.Filter=RangeAll
-log4perl.appender.A1.Filter=RangeError
+log4perl.appender.A1.Filter=RangeAll
 log4perl.appender.A1.filename=/tmp/links.log
 log4perl.appender.A1.mode=append
 log4perl.appender.A1.layout=Log::Log4perl::Layout::PatternLayout
