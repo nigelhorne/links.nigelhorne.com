@@ -33,6 +33,10 @@ use autodie qw(:all);
 use lib "$Bin/../lib";
 use Database::links;
 
+if(scalar(@ARGV) == 0) {
+        die "Usage: $0 URL"
+}
+
 my $links = Database::links->new("$Bin/../etc");
 
 if(my $entry = $links->entry(location => $ARGV[0])) {

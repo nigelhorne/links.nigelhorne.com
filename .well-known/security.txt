@@ -1,0 +1,5 @@
+Contact: mailto:njh@nigelhorne.com
+Contact: mailto:nigel_horne@hotmail.com
+Contact: mailto:nigel.horne@gmail.com
+Expires: 2026-01-01T04:59:00.000Z
+Preferred-Languages: en,fr
