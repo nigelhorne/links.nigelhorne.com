@@ -7,7 +7,7 @@ log4perl.logger.links=INFO, A1, A2, A3
 
 log4perl.appender.A1=Log::Dispatch::File
 # log4perl.appender.A1.Filter=RangeAll
-log4perl.appender.A1.Filter=RangeAll
+log4perl.appender.A1.Filter=RangeNotice
 log4perl.appender.A1.filename=/tmp/links.log
 log4perl.appender.A1.mode=append
 log4perl.appender.A1.layout=Log::Log4perl::Layout::PatternLayout
@@ -41,9 +41,13 @@ log4perl.appender.A3.layout=Log::Log4perl::Layout::Syslog
 
 log4perl.filter.RangeAll=Log::Log4perl::Filter::LevelRange
 log4perl.filter.RangeAll.LevelMin=TRACE
-# log4perl.filter.RangeAll.LevelMin=WARN
 log4perl.filter.RangeAll.LevelMax=FATAL
 log4perl.filter.RangeAll.AcceptOnMatch=true
+
+log4perl.filter.RangeNotice=Log::Log4perl::Filter::LevelRange
+log4perl.filter.RangeError.LevelMin=NOTICE
+log4perl.filter.RangeError.LevelMax=FATAL
+log4perl.filter.RangeError.AcceptOnMatch=true
 
 log4perl.filter.RangeError=Log::Log4perl::Filter::LevelRange
 # log4perl.filter.RangeError.LevelMin=INFO
