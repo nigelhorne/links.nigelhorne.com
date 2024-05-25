@@ -261,7 +261,7 @@ sub doit
 				HTTP::Status::status_message(301),
 				"\n",
 				"Location: $location\n\n";
-			$logger->notice("Changing $entry to $location");
+			$logger->info("Changing $entry to $location");
 		} else {
 			print "Status: 404 ", HTTP::Status::status_message(404), "\n",
 				"Content-Type: text/html; charset=ISO-8859-1\n",
