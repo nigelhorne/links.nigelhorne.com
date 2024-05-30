@@ -217,8 +217,8 @@ while($handling_request = ($request->Accept() >= 0)) {
 					print $mail "$key undefined\n";
 				}
 			}
+			close $mail;
 		}
-		close $mail;
 	};
 
 	$request->Finish();
