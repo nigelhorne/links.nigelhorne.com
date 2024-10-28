@@ -244,18 +244,17 @@ sub doit
 
 	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
 
-	my $options = {
-		logger => $logger
-	};
+	$info = CGI::Info->new(logger => $logger);
 
-	$info = CGI::Info->new($options);
-
+	# Check if the request is from a bot
 	if($info->is_robot()) {
 		# Payment required :-)
-		print "Status: 402 ",
-			HTTP::Status::status_message(402),
-			"\n\n";
-	} elsif(my $entry = $info->entry()) {
+		print "Status: 402 ", HTTP::Status::status_message(402), "\n\n";
+		return;
+	}
+
+	# Fetch the entry and process redirection or 404 handling
+	if(my $entry = $info->entry()) {
 		if(my $location = $links->location($entry)) {
 			print "Status: 301 ",
 				HTTP::Status::status_message(301),
