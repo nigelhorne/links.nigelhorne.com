@@ -249,20 +249,20 @@ sub doit
 	# Check if the request is from a bot
 	if($info->is_robot()) {
 		# Payment required :-)
-		print "Status: 402 ", HTTP::Status::status_message(402), "\n\n";
+		print 'Status: 402 ', HTTP::Status::status_message(402), "\n\n";
 		return;
 	}
 
 	# Fetch the entry and process redirection or 404 handling
 	if(my $entry = $info->entry()) {
 		if(my $location = $links->location($entry)) {
-			print "Status: 301 ",
+			print 'Status: 301 ',
 				HTTP::Status::status_message(301),
 				"\n",
 				"Location: $location\n\n";
 			$logger->info("Changing $entry to $location");
 		} else {
-			print "Status: 404 ", HTTP::Status::status_message(404), "\n",
+			print 'Status: 404 ', HTTP::Status::status_message(404), "\n",
 				"Content-Type: text/html; charset=ISO-8859-1\n",
 				"\n",
 				"Could not find $entry in the database\n";
@@ -272,10 +272,13 @@ sub doit
 }
 
 # False positives we don't need in the logs
-sub filter {
-	return 0 if($_[0] =~ /Can't locate Net\/OAuth\/V1_0A\/ProtectedResourceRequest.pm in /);
-	return 0 if($_[0] =~ /Can't locate auto\/NetAddr\/IP\/InetBase\/AF_INET6.al in /);
-	return 0 if($_[0] =~ /S_IFFIFO is not a valid Fcntl macro at /);
+sub filter
+{
+	# return 0 if($_[0] =~ /Can't locate Net\/OAuth\/V1_0A\/ProtectedResourceRequest.pm in /);
+	# return 0 if($_[0] =~ /Can't locate auto\/NetAddr\/IP\/InetBase\/AF_INET6.al in /);
+	# return 0 if($_[0] =~ /S_IFFIFO is not a valid Fcntl macro at /);
 
+	return 0 if $_[0] =~ /Can't locate (Net\/OAuth\/V1_0A\/ProtectedResourceRequest\.pm|auto\/NetAddr\/IP\/InetBase\/AF_INET6\.al) in |
+		   S_IFFIFO is not a valid Fcntl macro at /x;
 	return 1;
 }
