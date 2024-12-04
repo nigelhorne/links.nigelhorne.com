@@ -19,12 +19,14 @@ use warnings;
 BEGIN {
 	if(-d '/home/hornenj/perlmods') {
 		# Running at Dreamhost
-		unshift @INC, ('/home/hornenj/perlmods/lib/perl/5.30');
-		unshift @INC, ('/home/hornenj/perlmods/lib/perl/5.30.0');
-		unshift @INC, ('/home/hornenj/perlmods/share/perl/5.30');
-		unshift @INC, ('/home/hornenj/perlmods/share/perl/5.30.0');
-		unshift @INC, ('/home/hornenj/perlmods/lib/perl5');
-		unshift @INC, ('/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.30.0');
+		unshift @INC, (
+			'/home/hornenj/perlmods/lib/perl/5.30',
+			'/home/hornenj/perlmods/lib/perl/5.30.0',
+			'/home/hornenj/perlmods/share/perl/5.30',
+			'/home/hornenj/perlmods/share/perl/5.30.0',
+			'/home/hornenj/perlmods/lib/perl5',
+			'/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.30.0'
+		);
 	}
 }
 
