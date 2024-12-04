@@ -75,8 +75,7 @@ Log::Log4perl::init("$script_dir/../conf/$script_name.l4pconf");
 my $logger = Log::Log4perl->get_logger($script_name);
 Log::WarnDie->dispatcher($logger);
 
-my $links = Database::links->new($script_dir . '/../etc');
-
+my $links = eval { Database::links->new("$script_dir/../etc") };
 if($@) {
 	$logger->error($@);
 	Log::WarnDie->dispatcher(undef);
@@ -244,8 +243,6 @@ sub doit
 
 	$logger->debug('In doit - domain is ', $info->domain_name());
 
-	my %params = (ref($_[0]) eq 'HASH') ? %{$_[0]} : @_;
-
 	$info = CGI::Info->new(logger => $logger);
 
 	# Check if the request is from a bot
@@ -262,15 +259,21 @@ sub doit
 				HTTP::Status::status_message(301),
 				"\n",
 				"Location: $location\n\n";
-			$logger->info("Changing $entry to $location");
+			$logger->info("Redirected $entry to $location");
 		} else {
-			print 'Status: 404 ', HTTP::Status::status_message(404), "\n",
-				"Content-Type: text/html; charset=ISO-8859-1\n",
-				"\n",
-				"Could not find $entry in the database\n";
-			$logger->warn("Couldn't find $entry");
+			print_error(404, "Could not find $entry in the database");
 		}
+	} else {
+		print_error(400, 'Invalid or missing entry parameter');
 	}
+}
+
+sub print_error {
+	my ($status, $message) = @_;
+	print "Status: $status ", HTTP::Status::status_message($status), "\n",
+		"Content-Type: text/html; charset=ISO-8859-1\n\n",
+		"$message\n";
+	$logger->warn($message);
 }
 
 # False positives we don't need in the logs
