@@ -17,6 +17,10 @@ use warnings;
 # use diagnostics;
 
 BEGIN {
+	# Sanitize environment variables
+	delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};
+	$ENV{'PATH'} = '/usr/local/bin:/bin:/usr/bin';	# For insecurity
+
 	if(-d '/home/hornenj/perlmods') {
 		# Running at Dreamhost
 		unshift @INC, (
