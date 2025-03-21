@@ -9,14 +9,21 @@ use strict;
 use warnings;
 
 BEGIN {
+	# Sanitize environment variables
+	delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};
+	$ENV{'PATH'} = '/usr/local/bin:/bin:/usr/bin';	# For insecurity
+
 	if(-d '/home/hornenj/perlmods') {
 		# Running at Dreamhost
-		unshift @INC, ('/home/hornenj/perlmods/lib/perl/5.30');
-		unshift @INC, ('/home/hornenj/perlmods/lib/perl/5.30.0');
-		unshift @INC, ('/home/hornenj/perlmods/share/perl/5.30');
-		unshift @INC, ('/home/hornenj/perlmods/share/perl/5.30.0');
-		unshift @INC, ('/home/hornenj/perlmods/lib/perl5');
-		unshift @INC, ('/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.30.0');
+		unshift @INC, (
+			'/home/hornenj/perlmods/lib/perl/5.34',
+			'/home/hornenj/perlmods/lib/perl/5.34.0',
+			'/home/hornenj/perlmods/share/perl/5.34',
+			'/home/hornenj/perlmods/share/perl/5.34.0',
+			'/home/hornenj/perlmods/lib/perl5',
+			'/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.34.0',
+			'/home/hornenj/perlmods/lib/perl5/x86_64-linux-gnu-thread-multi'
+		);
 	}
 }
 
@@ -28,4 +35,4 @@ use CGI::Info;
 use HTTP::Status ':constants';
 
 print 'Status: ', HTTP::Status::status_message(HTTP_OK), "\n\n",
-	String::Random->new()->randpattern('s' x 8), "\n";
+	lc(String::Random->new()->randpattern('s' x 8)), "\n";

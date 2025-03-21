@@ -26,7 +26,7 @@ BEGIN {
 		unshift @INC, (
 			'/home/hornenj/perlmods/lib/perl/5.34',
 			'/home/hornenj/perlmods/lib/perl/5.34.0',
-			'/home/hornenj/perlmods/share/perl/5.30',
+			'/home/hornenj/perlmods/share/perl/5.34',
 			'/home/hornenj/perlmods/share/perl/5.34.0',
 			'/home/hornenj/perlmods/lib/perl5',
 			'/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.34.0',
