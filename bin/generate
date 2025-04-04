@@ -55,6 +55,8 @@ if(my $entry = $links->entry(location => $ARGV[0])) {
 while(1) {
 	my $entry = lc(String::Random->new()->randpattern('s' x 8));
 
+	$entry =~ s/\//-/g;	# Remove slashes from shortened URLs
+
 	if(!$links->location($entry)) {
 		print "http://links.nigelhorne.com/l/$entry\n";
 		if(open(my $fout, '>>', File::Spec->catfile("$Bin/../etc", 'links.csv'))) {
