@@ -222,6 +222,9 @@ Disallow: /
 User-agent: Barkrowler/0.7
 Disallow: /
 
+User-agent: Clickagy
+Disallow: /
+
 User-agent: *
 Disallow: /bin
 # Disallow: /

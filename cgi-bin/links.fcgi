@@ -45,8 +45,10 @@ use CGI::Alert $ENV{'SERVER_ADMIN'} || 'alerts@nigelhorne.com';
 use CGI::Info;
 use Error qw(:try);
 use Log::Any::Adapter;
+use LWP::Simple;
 use HTTP::Status ':constants';
 use Log::WarnDie 0.09;
+use URI;
 # Gives Insecure dependency in require while running with -T switch in Module/Runtime.pm
 # use Taint::Runtime qw($TAINT taint_env);
 use autodie qw(:all);
@@ -261,6 +263,34 @@ sub doit
 	# Fetch the entry and process redirection or 404 handling
 	if(my $entry = $info->entry()) {
 		if(my $location = $links->location($entry)) {
+			my $content = get($location);
+
+			if(defined($content)) {
+				my ($head, $body) = split /<\/head>/mis, $content, 2;
+				if($head && $body) {
+					my $url = URI->new($location);
+					$location = $url->scheme() . '://' . $url->host();
+
+					print "Status: 200 OK\n",
+						"Content-type: text/html; charset=UTF-8\n\n";
+					$head =~ /(.*)(<head.*?>)(.+)/mis;
+					my_print("$1\n$2<base href=\"$location\">\n$3");
+					print <<'EOF';
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9001681496954416" crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88666126-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-88666126-1');
+</script>
+EOF
+					my_print("\n</head>$body\n");
+					exit;
+				}
+			}
 			print 'Status: 301 ',
 				HTTP::Status::status_message(301),
 				"\n",
@@ -292,4 +322,11 @@ sub filter
 	return 0 if $_[0] =~ /Can't locate (Net\/OAuth\/V1_0A\/ProtectedResourceRequest\.pm|auto\/NetAddr\/IP\/InetBase\/AF_INET6\.al) in |
 		   S_IFFIFO is not a valid Fcntl macro at /x;
 	return 1;
+}
+
+# https://www.perlmonks.org/?node_id=11161647
+sub my_print {
+	my $s = join('', @_);
+	utf8::encode($s);
+	print $s;
 }
