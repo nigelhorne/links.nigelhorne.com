@@ -274,7 +274,11 @@ sub doit
 					print "Status: 200 OK\n",
 						"Content-type: text/html; charset=UTF-8\n\n";
 					$head =~ /(.*)(<head.*?>)(.+)/mis;
-					my_print("$1\n$2<base href=\"$location\">\n$3");
+					if(defined($3)) {
+						my_print("$1\n$2<base href=\"$location\">\n$3");
+					} else {
+						my_print("$1\n$2<base href=\"$location\">");
+					}
 					print <<'EOF';
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9001681496954416" crossorigin="anonymous"></script>
 <!-- Google tag (gtag.js) -->
