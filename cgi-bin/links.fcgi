@@ -24,32 +24,29 @@ BEGIN {
 	if(-d '/home/hornenj/perlmods') {
 		# Running at Dreamhost
 		unshift @INC, (
-			'/home/hornenj/perl5/lib/perl5',
-			'/home/hornenj/perlmods/lib/perl5/x86_64-linux-gnu-thread-multi',
 			'/home/hornenj/perlmods/lib/perl/5.34',
 			'/home/hornenj/perlmods/lib/perl/5.34.0',
 			'/home/hornenj/perlmods/share/perl/5.34',
 			'/home/hornenj/perlmods/share/perl/5.34.0',
 			'/home/hornenj/perlmods/lib/perl5',
-			'/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.34.0'
+			'/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.34.0',
+			'/home/hornenj/perlmods/lib/perl5/x86_64-linux-gnu-thread-multi'
 		);
 	}
 }
 
 no lib '.';
 
-use Log::Log4perl qw(:levels);	# Put first to cleanup last
 use CGI::ACL;	# TODO: finish
+use Config::Abstraction;
 use FCGI;
 use File::Basename;
 use CGI::Alert $ENV{'SERVER_ADMIN'} || 'alerts@nigelhorne.com';
 use CGI::Info;
 use Error qw(:try);
-use Log::Any::Adapter;
-use LWP::Simple;
+use Log::Abstraction;
 use HTTP::Status ':constants';
 use Log::WarnDie 0.09;
-use URI;
 # Gives Insecure dependency in require while running with -T switch in Module/Runtime.pm
 # use Taint::Runtime qw($TAINT taint_env);
 use autodie qw(:all);
@@ -79,8 +76,9 @@ if($ENV{'HTTP_USER_AGENT'}) {
 }
 
 my $script_dir = $info->script_dir();
-Log::Log4perl::init("$script_dir/../conf/$script_name.l4pconf");
-my $logger = Log::Log4perl->get_logger($script_name);
+my $env_prefix = uc($info->host_name()) . '_';
+$env_prefix =~ tr/\./_/;
+my $logger = Log::Abstraction->new(Config::Abstraction->new(env_prefix => $env_prefix, flatten => 0, config_file => 'links.nigelhorne.com', config_dirs => ["$script_dir/../conf/", "$script_dir/../../conf"])->all());
 Log::WarnDie->dispatcher($logger);
 
 my $links = eval { Database::links->new("$script_dir/../etc") };
@@ -150,8 +148,7 @@ while($handling_request = ($request->Accept() >= 0)) {
 			$lang =~ tr/_/-/;
 			$ENV{'HTTP_ACCEPT_LANGUAGE'} = lc($lang);
 		}
-		Log::Any::Adapter->set('Stdout', log_level => 'trace');
-		$logger = Log::Any->get_logger(category => $script_name);
+		$logger = Log::Abstraction->new(logger => sub { print join(', ', @{$_[0]->{'message'}}), "\n" }, level => 'debug');
 		Log::WarnDie->dispatcher($logger);
 		$links->set_logger($logger);
 		$info->set_logger($logger);
@@ -168,8 +165,6 @@ while($handling_request = ($request->Accept() >= 0)) {
 	}
 
 	$requestcount++;
-	Log::Any::Adapter->set( { category => $script_name }, 'Log4perl');
-	$logger = Log::Any->get_logger(category => $script_name);
 	$logger->info("Request $requestcount: ", $ENV{'REMOTE_ADDR'});
 	$links->set_logger($logger);
 	$info->set_logger($logger);
@@ -264,38 +259,6 @@ sub doit
 	# Fetch the entry and process redirection or 404 handling
 	if(my $entry = $info->entry()) {
 		if(my $location = $links->location($entry)) {
-			my $content = get($location);
-
-			if(defined($content)) {
-				my ($head, $body) = split /<\/head>/mis, $content, 2;
-				if($head && $body) {
-					my $url = URI->new($location);
-					$location = $url->scheme() . '://' . $url->host();
-
-					print "Status: 200 OK\n",
-						"Content-type: text/html; charset=UTF-8\n\n";
-					$head =~ /(.*)(<head.*?>)(.+)/mis;
-					if(defined($3)) {
-						my_print("$1\n$2<base href=\"$location\">\n$3");
-					} else {
-						my_print("$1\n$2<base href=\"$location\">");
-					}
-					print <<'EOF';
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9001681496954416" crossorigin="anonymous"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88666126-1"></script>
-<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-
-	gtag('config', 'UA-88666126-1');
-</script>
-EOF
-					my_print("\n</head>$body\n");
-					exit;
-				}
-			}
 			print 'Status: 301 ',
 				HTTP::Status::status_message(301),
 				"\n",
@@ -327,11 +290,4 @@ sub filter
 	return 0 if $_[0] =~ /Can't locate (Net\/OAuth\/V1_0A\/ProtectedResourceRequest\.pm|auto\/NetAddr\/IP\/InetBase\/AF_INET6\.al) in |
 		   S_IFFIFO is not a valid Fcntl macro at /x;
 	return 1;
-}
-
-# https://www.perlmonks.org/?node_id=11161647
-sub my_print {
-	my $s = join('', @_);
-	utf8::encode($s);
-	print $s;
 }
