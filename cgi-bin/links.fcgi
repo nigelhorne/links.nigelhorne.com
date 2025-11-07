@@ -123,11 +123,13 @@ $ENV{'PATH'} = '/usr/local/bin:/bin:/usr/bin';	# For insecurity
 # my ($stdin, $stdout, $stderr) = (IO::Handle->new(), IO::Handle->new(), IO::Handle->new());
 # https://stackoverflow.com/questions/14563686/how-do-i-get-errors-in-from-a-perl-script-running-fcgi-pm-to-appear-in-the-apach
 $SIG{__DIE__} = $SIG{__WARN__} = sub {
+	my $msg = join '', @_;
 	if(open(my $fout, '>>', File::Spec->catfile($tmpdir, "$script_name.stderr"))) {
-		print $fout @_;
+		print $fout $info->domain_name(), ": $msg";
 	# } else {
 		# print $stderr @_;
 	}
+	$logger->fatal($msg) if($logger);
 	Log::WarnDie->dispatcher(undef);
 	die @_
 };
