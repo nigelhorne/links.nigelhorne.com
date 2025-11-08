@@ -37,7 +37,7 @@ BEGIN {
 
 no lib '.';
 
-use CGI::ACL;	# TODO: finish
+# use CGI::ACL;	# TODO: finish
 use Config::Abstraction;
 use FCGI;
 use File::Basename;
@@ -100,7 +100,7 @@ my @blacklist_country_list = (
 	'CO', 'MX', 'IN', 'RS', 'PK', 'UA', 'XH'
 );
 
-my $acl = CGI::ACL->new()->allow_country(country => \@blacklist_country_list)->allow_ip('127.0.0.1');
+# my $acl = CGI::ACL->new()->allow_country(country => \@blacklist_country_list)->allow_ip('127.0.0.1');
 
 sub sig_handler {
 	$exit_requested = 1;
