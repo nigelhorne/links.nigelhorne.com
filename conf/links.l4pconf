@@ -53,6 +53,6 @@ log4perl.filter.RangeInfo.AcceptOnMatch=true
 
 log4perl.filter.RangeError=Log::Log4perl::Filter::LevelRange
 # log4perl.filter.RangeError.LevelMin=INFO
-log4perl.filter.RangeError.LevelMin=WARN
+log4perl.filter.RangeError.LevelMin=NOTICE
 log4perl.filter.RangeError.LevelMax=FATAL
 log4perl.filter.RangeError.AcceptOnMatch=true

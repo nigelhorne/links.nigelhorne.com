@@ -38,13 +38,21 @@ BEGIN {
 no lib '.';
 
 # use CGI::ACL;	# TODO: finish
+<<<<<<< HEAD
 use Config::Abstraction;
+=======
+>>>>>>> 1b6b3f1 (sync)
 use FCGI;
 use File::Basename;
 use CGI::Alert $ENV{'SERVER_ADMIN'} || 'alerts@nigelhorne.com';
 use CGI::Info;
+use Config::Abstraction;
 use Error qw(:try);
 use Log::Abstraction;
+<<<<<<< HEAD
+=======
+use LWP::Simple;
+>>>>>>> 1b6b3f1 (sync)
 use HTTP::Status ':constants';
 use Log::WarnDie 0.09;
 # Gives Insecure dependency in require while running with -T switch in Module/Runtime.pm
