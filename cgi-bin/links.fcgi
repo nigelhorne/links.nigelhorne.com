@@ -21,38 +21,34 @@ BEGIN {
 	delete @ENV{qw(IFS CDPATH ENV BASH_ENV)};
 	$ENV{'PATH'} = '/usr/local/bin:/bin:/usr/bin';	# For insecurity
 
-	if(-d '/home/hornenj/perlmods') {
+	if(-d '/home/hornenj/perl5') {
 		# Running at Dreamhost
-		unshift @INC, (
-			'/home/hornenj/perlmods/lib/perl/5.34',
-			'/home/hornenj/perlmods/lib/perl/5.34.0',
-			'/home/hornenj/perlmods/share/perl/5.34',
-			'/home/hornenj/perlmods/share/perl/5.34.0',
-			'/home/hornenj/perlmods/lib/perl5',
-			'/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.34.0',
-			'/home/hornenj/perlmods/lib/perl5/x86_64-linux-gnu-thread-multi'
-		);
+		# unshift @INC, (
+			# '/home/hornenj/perl5/lib/perl5',
+			# '/home/hornenj/perlmods/lib/perl5/x86_64-linux-gnu-thread-multi',
+			# '/home/hornenj/perlmods/lib/perl/5.34',
+			# '/home/hornenj/perlmods/lib/perl/5.34.0',
+			# '/home/hornenj/perlmods/share/perl/5.34',
+			# '/home/hornenj/perlmods/share/perl/5.34.0',
+			# '/home/hornenj/perlmods/lib/perl5',
+			# '/home/hornenj/perlmods/lib/x86_64-linux-gnu/perl/5.34.0'
+		# );
+		use lib '/home/hornenj/perl5/lib/perl5';
 	}
 }
 
 no lib '.';
 
 # use CGI::ACL;	# TODO: finish
-<<<<<<< HEAD
 use Config::Abstraction;
-=======
->>>>>>> 1b6b3f1 (sync)
 use FCGI;
 use File::Basename;
 use CGI::Alert $ENV{'SERVER_ADMIN'} || 'alerts@nigelhorne.com';
 use CGI::Info;
-use Config::Abstraction;
 use Error qw(:try);
 use Log::Abstraction;
-<<<<<<< HEAD
-=======
 use LWP::Simple;
->>>>>>> 1b6b3f1 (sync)
+use LWP::UserAgent;
 use HTTP::Status ':constants';
 use Log::WarnDie 0.09;
 # Gives Insecure dependency in require while running with -T switch in Module/Runtime.pm
@@ -265,6 +261,47 @@ sub doit
 	# Fetch the entry and process redirection or 404 handling
 	if(my $entry = $info->entry()) {
 		if(my $location = $links->location($entry)) {
+			my $ua = LWP::UserAgent->new();
+			$ua->agent($ENV{'HTTP_USER_AGENT'} // 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36');
+			my $response = $ua->get($location);
+			my $content;
+			if($response->is_success()) {
+				$content = $response->decoded_content();
+			} else {
+				$logger->notice("$location: ", $response->status_line());
+			}
+
+			if($content) {
+				my ($head, $body) = split /<\/head>/mis, $content, 2;
+				if($head && $body) {
+					my $url = URI->new($location);
+					$location = $url->scheme() . '://' . $url->host();
+
+					print "Status: 200 OK\n",
+					"Content-type: text/html; charset=UTF-8\n\n";
+					$head =~ /(.*)(<head.*?>)(.+)/mis;
+					if(defined($3)) {
+						my_print("$1\n$2<base href=\"$location\">\n$3");
+					} else {
+						my_print("$1\n$2<base href=\"$location\">");
+					}
+					print <<'EOF';
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9001681496954416" crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-88666126-1"></script>
+<script>
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+
+	gtag('config', 'UA-88666126-1');
+</script>
+EOF
+					my_print("\n</head>$body\n");
+					exit;
+				}
+				$logger->notice("Couldn't parse $location");
+			}
 			print 'Status: 301 ',
 				HTTP::Status::status_message(301),
 				"\n",
@@ -296,4 +333,11 @@ sub filter
 	return 0 if $_[0] =~ /Can't locate (Net\/OAuth\/V1_0A\/ProtectedResourceRequest\.pm|auto\/NetAddr\/IP\/InetBase\/AF_INET6\.al) in |
 		   S_IFFIFO is not a valid Fcntl macro at /x;
 	return 1;
+}
+
+# https://www.perlmonks.org/?node_id=11161647
+sub my_print {
+	my $s = join('', @_);
+	utf8::encode($s);
+	print $s;
 }
